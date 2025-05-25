@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daniel </title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="img/Profile.jpg" type="image/x-icon">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            background: #111;
+            color: #fff;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Bubblande bakgrund */
+        .bubbles {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        .bubble {
+            position: absolute;
+            bottom: -100px;
+            border-radius: 50%;
+            opacity: 0.5;
+            background: linear-gradient(135deg, #fff, #888, #222);
+            animation: bubbleUp 12s linear infinite;
+        }
+        @keyframes bubbleUp {
+            0% { transform: translateY(0) scale(1);}
+            100% { transform: translateY(-110vh) scale(1.2);}
+        }
+
+        /* Animerad text-glow på rubriker */
+        h1, h2, h3 {
+            text-align: center;
+            letter-spacing: 2px;
+            background: linear-gradient(90deg, #fff, #aaa, #fff, #888);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: glow 2s infinite alternate;
+            filter: drop-shadow(0 0 10px #fff);
+        }
+        @keyframes glow {
+            0% { text-shadow: 0 0 10px #fff, 0 0 20px #aaa; }
+            100% { text-shadow: 0 0 30px #fff, 0 0 60px #aaa; }
+        }
+
+        /* Gradientramar och skuggor */
+        .container {
+            background: rgba(20,20,20,0.85);
+            border-radius: 18px;
+            border: 3px solid;
+            border-image: linear-gradient(90deg, #fff, #888, #fff) 1;
+            box-shadow: 0 0 32px 4px #222, 0 0 0 6px #fff2 inset;
+            margin: 2rem auto;
+            padding: 2rem;
+            max-width: 900px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Neonknappar */
+        header nav ul li a,
+        .cta, .home-button, form button {
+            background: linear-gradient(90deg, #fff, #888, #fff);
+            color: #111;
+            border: none;
+            border-radius: 8px;
+            padding: 0.3rem 0.9rem;      /* Mindre padding */
+            font-weight: 500;
+            font-size: 0.95rem;          /* Mindre text */
+            margin: 0.2rem;
+            box-shadow: 0 0 4px #fff, 0 0 8px #888; /* Mindre skugga */
+            transition: transform 0.2s, box-shadow 0.2s, color 0.2s;
+            text-decoration: none;
+            display: inline-block;
+            position: relative;
+            z-index: 2;
+        }
+        header nav ul li a:hover,
+        .cta:hover, .home-button:hover, form button:hover {
+            color: #fff;
+            background: linear-gradient(90deg, #888, #fff, #888);
+            box-shadow: 0 0 12px #fff, 0 0 24px #888;
+            transform: scale(1.04) rotate(-1deg);
+        }
+
+        /* Portfolio-bilder med neonram */
+        .portfolio-image {
+            width: 150px;
+            height: auto;
+            border-radius: 12px;
+            border: 3px solid;
+            border-image: linear-gradient(135deg, #fff, #888, #fff) 1;
+            box-shadow: 0 0 24px #fff, 0 0 48px #888;
+            margin: 1rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .portfolio-image:hover {
+            transform: scale(1.07) rotate(1deg);
+            box-shadow: 0 0 40px #fff, 0 0 80px #888;
+        }
+
+        /* FAQ och Testimonials extra glow */
+        .faq-item, .testimonial {
+            background: rgba(30,30,30,0.8);
+            border-radius: 12px;
+            border: 2px solid #fff;
+            box-shadow: 0 0 16px #fff, 0 0 32px #888;
+            margin: 1rem 0;
+            padding: 1rem;
+        }
+
+        /* Icon style */
+        .icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 16px auto 8px auto;
+            display: block;
+            box-shadow: 0 0 16px #fff, 0 0 32px #888;
+        }
+
+        /* Kontaktformulär - snyggare stil */
+        #contactForm {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            background: rgba(30,30,30,0.92);
+            border-radius: 14px;
+            border: 2px solid #fff;
+            box-shadow: 0 0 16px #fff, 0 0 32px #888;
+            padding: 2rem;
+            max-width: 400px;
+            margin: 2rem auto;
+        }
+
+        #contactForm label {
+            font-weight: 500;
+            letter-spacing: 1px;
+            margin-bottom: 0.2rem;
+            color: #fff;
+        }
+
+        #contactForm input,
+        #contactForm textarea {
+            background: #181818;
+            color: #fff;
+            border: 1.5px solid #888;
+            border-radius: 7px;
+            padding: 0.7rem;
+            font-size: 1rem;
+            transition: border 0.2s, box-shadow 0.2s;
+            outline: none;
+            resize: vertical;
+        }
+
+        #contactForm input:focus,
+        #contactForm textarea:focus {
+            border: 1.5px solid #fff;
+            box-shadow: 0 0 8px #fff, 0 0 16px #888;
+        }
+
+        #contactForm button {
+            background: linear-gradient(90deg, #fff, #888, #fff);
+            color: #111;
+            border: none;
+            border-radius: 8px;
+            padding: 0.6rem 1.2rem;
+            font-weight: bold;
+            font-size: 1.05rem;
+            margin-top: 0.5rem;
+            box-shadow: 0 0 8px #fff, 0 0 16px #888;
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s, box-shadow 0.2s, transform 0.2s;
+        }
+
+        #contactForm button:hover {
+            background: linear-gradient(90deg, #888, #fff, #888);
+            color: #fff;
+            box-shadow: 0 0 16px #fff, 0 0 32px #888;
+            transform: scale(1.04);
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+
+            header h2 {
+                font-size: 1.2rem;
+            }
+
+            header nav ul {
+                flex-direction: column;
+            }
+
+            header nav ul li {
+                margin: 10px 0;
+            }
+
+            .container {
+                width: 90%;
+            }
+
+            .portfolio-image {
+                width: 100%;
+                height: auto;
+            }
+        }
+
+        header nav ul {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 18px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+header nav ul li {
+    margin: 0;
+    padding: 0;
+}
+
+#scrollTopBtn {
+    display: none;
+    position: fixed;
+    bottom: 32px;
+    right: 32px;
+    z-index: 99;
+    border: none;
+    outline: none;
+    background: linear-gradient(90deg, #fff, #888, #fff);
+    color: #111;
+    cursor: pointer;
+    padding: 0.7rem 1.1rem;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    box-shadow: 0 0 12px #fff, 0 0 24px #888;
+    transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+}
+
+#scrollTopBtn:hover {
+    background: linear-gradient(90deg, #888, #fff, #888);
+    color: #fff;
+}
+
+.tiktok-embed {
+    animation: fadeInTikTok 1.5s ease;
+    box-shadow: 0 0 24px #fff, 0 0 48px #888;
+    border-radius: 14px;
+}
+@keyframes fadeInTikTok {
+    from { opacity: 0; transform: translateY(40px);}
+    to   { opacity: 1; transform: translateY(0);}
+}
+    </style>
+</head>
+<body>
+    <header id="header">
+        <img src="img/Profile.jpg" alt="Icon" class="icon">
+        <h1>Daniel Wilhelm Thuné</h1>
+        <h2>Student | Teacher | Software Engineer | Content creator</h2>
+        <nav>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#portfolio">Portfolio</a></li>
+                <li><a href="#testimonials">Testimonials</a></li>
+                <li><a href="#skills">Skills</a></li>
+                <li><a href="#certificates">Certificates</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <li><a href="http://127.0.0.1:5500/Contactform.html">Contact Form</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section id="hero">
+            <div class="container">
+                <h1>Daniel Wilhelm Thuné</h1>
+                <p>Student | Teacher | Software Engineer | Content creator</p>
+                <a href="#about" class="cta">Learn More</a>
+            </div>
+        </section>
+        <section id="home">
+            <div class="container">
+                <h2>Welcome to My Website</h2>
+                <p>This is a brief introduction about myself and my work.</p>
+                <p>And I hope that you will enjoy your stay here.</p>
+            </div>
+        </section>
+        <section id="about">
+            <div class="container">
+                <h2>About Me</h2>
+                <p>Ambitious and analytical student specializing in pedagogy and artificial intelligence (AI). Combines technical expertise in Python development and AI with a deep understanding of how technologies can enhance education and professional environments. Currently pursuing studies at Västerås Technical University, Mid Sweden University, and Harvard University. Driven to develop innovative solutions that strengthen learning processes, optimize workflows, and bridge the gap between education and technology. Actively seeking opportunities to integrate technical skills with pedagogical insights to create impactful, technology-driven learning environments.</p>
+                <p><strong>Contact</strong></p>
+                <p><strong>Phone:</strong> 072-939-92-92</p>
+                <p><strong>LinkedIn:</strong> <a href="https://www.linkedin.com/in/daniel-wilhelm-thun%C3%A9-8a941b1a2/" target="_blank">Daniel-Wilhelm Thuné</a></p>
+                <p><strong>Website:</strong> <a href="https://github.com/Danielgrownthun" target="_blank">Danielgrownthun (Daniel Thuné)</a></p>
+                <p><strong>Email:</strong> <a href="mailto:daniel.mog92@hotmail.se">daniel.mog92@hotmail.se</a></p>
+            </div>
+        </section>
+        <section id="services">
+            <div class="container">
+                <h2>AI Education and Training</h2>
+                <p>What i offer a variety of services to help you learn and apply AI technologies just go down the contact form:</p>
+                <ul>
+                    <li>Online Courses: From basic AI to advanced techniques</li>
+                    <li>Workshops and Webinars: Live and on-demand sessions</li>
+                    <li>Certification Programs: Validate your AI skills</li>
+                    <li>Mentorship and Coaching: Personalized guidance</li>
+                    <li>Resources and Tools: Articles, tutorials, and software</li>
+                    <li>Community and Forum: Connect with other AI enthusiasts</li>
+                    <li>Blog and Newsletter: Stay updated with the latest in AI</li>
+                </ul>
+            </div>
+        </section>
+        <section id="portfolio">
+            <div class="container">
+                <h2>Portfolio</h2>
+                <p>Here i am.</p>
+                <div class="portfolio-images">
+                    <img src="img/Profile.jpg" alt="Portfolio Image 1" class="portfolio-image">
+                    <img src="img/thumbnail_image5.jpg" alt="Portfolio Image 2" class="portfolio-image">
+                    <img src="img/thumbnail_image3 (1).jpg" alt="Portfolio Image 3" class="portfolio-image">
+                </div>
+                <!-- Add your projects here -->
+            </div>
+        </section>
+        <section id="testimonials">
+            <div class="container">
+                <h2>Testimonials</h2>
+                <p>Here's what our students and clients have to say:</p>
+                <div class="testimonial">
+                    <p>"The AI courses offered here are top-notch. I've learned so much and feel confident in applying AI techniques in my projects."</p>
+                    <p><strong>- Jane Doe, Data Scientist</strong></p>
+                </div>
+                <div class="testimonial">
+                    <p>"The mentorship program was incredibly helpful. I received personalized guidance that helped me advance my career."</p>
+                    <p><strong>- John Smith, AI Engineer</strong></p>
+                </div>
+            </div>
+        </section>
+        <section id="skills">
+            <div class="container">
+                <h2>Skills</h2>
+                <p>Here you can list your technical and soft skills.</p>
+                <ul>
+                    <li>Power BI</li>
+                    <li>Administrative</li>
+                    <li>VIVA Connection</li>
+                    <li>CoPilot</li>
+                    <li>AI-tools: GitHub Copilot</li>
+                    <li>Analytical and structured</li>
+                    <li>Strong communication and pedagogical skills</li>
+                    <li>Marketing and Content creator</li>
+                    <li>International work experience in customer service and technical solutions</li>
+                </ul>
+            </div>
+        </section>
+        <section id="certificates">
+            <div class="container">
+                <h2>Certificates and Awards</h2>
+                <ul>
+                    <li>Driver's license (B)</li>
+                    <li>Forklift license (a + b)</li>
+                    <li>Hot work</li>
+                    <li>HTML</li>
+                    <li>CSS</li>
+                    <li>Elements of AI</li>
+                    <li>AI-Fundamentals</li>
+                    <li>CoPilot</li>
+                    <li>Power Virtual Agents</li>
+                    <li>Microsoft VIVA</li>
+                    <li>Google Fundamentals</li>
+                    <li>Google Analytics</li>
+                    <li>Google Ads Display</li>
+                    <li>AI-Powered shopping ads</li>
+                </ul>
+            </div>
+        </section>
+        <section id="education">
+            <div class="container">
+                <h2>Education</h2>
+                <ul>
+                    <li>EC Education, Frontend Developer (March 2025-Current)</li>
+                    <li>Mid Sweden University, Pedagogy in AI: Theories and Applications for Education and Work (December 2024-Current)</li>
+                    <li>Harvard University, Cambridge CS50's Introduction to AI with Python, Distance (September 2024-Current)</li>
+                    <li>KTH Royal Institute of Technology, AI (Graduation year 2024)</li>
+                </ul>
+            </div>
+        </section>
+        <section id="experience">
+            <div class="container">
+                <h2>Work Experience</h2>
+                <ul>
+                    <li>Hallstahammar kommun, Teacher (2025-Current)</li>
+                    <li>Läxhjälpen, Teacher and coach (2022-Current, 2025-Current)</li>
+                    <li>Dustin Home, Stockholm, Desktop Support Specialist (2024-Current)</li>
+                    <li>ICA Lager, Västerås, Forklift Driver (2024-2024)</li>
+                    <li>Twoday, Copilot (2023–2024)</li>
+                    <li>House Of Service, SharePoint Developer (2022-2023)</li>
+                </ul>
+            </div>
+        </section>
+        <section id="contact">
+            <div class="container">
+                <h2>Contact</h2>
+                <p>Get in touch with me through the following channels.</p>
+                <p><strong>Email:</strong> <a href="mailto:daniel.mog92@hotmail.se">daniel.mog92@hotmail.se</a></p>
+                <p><strong>LinkedIn:</strong> <a href="https://www.linkedin.com/in/daniel-wilhelm-thun%C3%A9-8a941b1a2/" target="_blank">Daniel Wilhelm Thuné</a></p>
+                <p><strong>TikTok:</strong> <a href="https://www.tiktok.com/@danielthune95?lang=sv-SE" target="_blank">@danielthune95</a></p>
+            </div>
+        </section>
+        <section id="contact-form">
+            <div class="container">
+                <h1>Contact Me</h1>
+                <form id="contactForm">
+                    <label for="name">Name</label>
+                    <input type="text" id="name" name="name" required>
+
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+
+                    <label for="message">Message</label>
+                    <textarea id="message" name="message" rows="5" required></textarea>
+
+                    <button type="submit">Send</button>
+                </form>
+                <a href="http://www.DanielWilhelmthune.se#home" class="home-button">Home</a>
+            </div>
+        </section>
+        <section id="faq">
+            <div class="container">
+                <h2>Frequently Asked Questions</h2>
+                <div class="faq-item">
+                    <h3>What is AI?</h3>
+                    <p>Artificial Intelligence (AI) is the simulation of human intelligence in machines that are programmed to think and learn like humans.</p>
+                </div>
+                <div class="faq-item">
+                    <h3>Do I need prior experience to take your courses?</h3>
+                    <p>No, we offer courses for all levels, from beginners to advanced practitioners.</p>
+                </div>
+            </div>
+        </section>
+        <section id="pricing">
+            <div class="container">
+                <h2>Pricing Plans</h2>
+                <div class="pricing-plan">
+                    <h3>Basic Plan</h3>
+                    <p>$10/month</p>
+                    <ul>
+                        <li>Access to all basic courses</li>
+                        <li>Monthly webinars</li>
+                        <li>Community access</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        <section id="blog">
+            <div class="container">
+                <h2>Blog</h2>
+                <p>Read our latest articles on AI, technology, and more.</p>
+                <div class="blog-post">
+                    <h3>Understanding Machine Learning</h3>
+                    <p>Machine learning is a subset of AI that focuses on building systems that learn from data...</p>
+                    <a href="path/to/full-article">Read More</a>
+                </div>
+                <div class="blog-post">
+                    <h3>The Future of AI</h3>
+                    <p>AI is rapidly evolving and has the potential to transform many industries...</p>
+                    <a href="path/to/full-article">Read More</a>
+                </div>
+            </div>
+        </section>
+        <div style="max-width:340px;margin:2rem auto;">
+  <h3 style="text-align:center;margin-bottom:0.5rem;color:#fff;text-shadow:0 0 8px #fff;">Se mig på TikTok!</h3>
+  <blockquote class="tiktok-embed"
+    cite="https://www.tiktok.com/@danielthune95/video/7506857667915156758"
+    data-video-id="7506857667915156758"
+    style="max-width: 325px;min-width: 225px;">
+    <section> </section>
+  </blockquote>
+  <div style="text-align:center;color:#aaa;font-size:0.95rem;margin-top:0.5rem;">
+    Följ mig för fler AI-tips och inspiration!
+  </div>
+  <script async src="https://www.tiktok.com/embed.js"></script>
+</div>
+    </main>
+    <footer>
+        <div class="container">
+            <p>&copy; 2023 Daniel Wilhelm Thuné. All rights reserved.</p>
+        </div>
+    </footer>
+    <button id="scrollTopBtn" title="Go to top">&#8679;</button>
+    <script>
+        document.addEventListener('scroll', function() {
+            const header = document.getElementById('header');
+            if (window.scrollY > 50) {
+                header.classList.add('shrink');
+            } else {
+                header.classList.remove('shrink');
+            }
+
+            const portfolioImages = document.querySelectorAll('.portfolio-image');
+            const portfolioSection = document.getElementById('portfolio');
+            const portfolioTop = portfolioSection.getBoundingClientRect().top;
+            const windowHeight = window.innerHeight;
+
+            if (portfolioTop < windowHeight) {
+                portfolioImages.forEach(image => {
+                    image.classList.add('visible');
+                });
+            }
+        });
+
+        const images = [
+            'img/Profile.jpg',
+            'img/thumbnail_image5.jpg',
+            'img/thumbnail_image3 (1).jpg'
+        ];
+
+        let currentIndex = 0;
+
+        function changeImages() {
+            const portfolioImages = document.querySelectorAll('.portfolio-image');
+            portfolioImages.forEach((img, index) => {
+                img.src = images[(currentIndex + index) % images.length];
+            });
+            currentIndex = (currentIndex + 1) % images.length;
+        }
+
+        setInterval(changeImages, 30000); // Change images every 30 seconds
+
+        document.getElementById('contactForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const message = document.getElementById('message').value;
+            const mailtoLink = `mailto:daniel.mog92@hotmail.se?subject=Contact from ${name}&body=${message} (Email: ${email})`;
+            window.location.href = mailtoLink;
+        });
+
+        // Scroll to top button
+        const scrollTopBtn = document.getElementById('scrollTopBtn');
+
+        window.onscroll = function() {
+            scrollTopBtn.style.display = (window.scrollY > 200) ? "block" : "none";
+        };
+        scrollTopBtn.onclick = function() {
+            window.scrollTo({top: 0, behavior: 'smooth'});
+        };
+    </script>
+</body>
+</html>
